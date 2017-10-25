@@ -948,7 +948,9 @@ turtles-own
 		
 	ask patches
 	 [  
-	  set pcolor scale-color green elevation min [elevation] of patches max [elevation] of patches
+	  set pcolor scale-color green elevation 
+	  	min [elevation] of patches 
+		max [elevation] of patches
 	  set used? false
 	 ]
 	end
