@@ -13,7 +13,7 @@
 
 ## 온라인 리소스
 * Railsback and Grimm (2012), [Downloads and Errata](http://www.railsback-grimm-abm-book.com/downloads.html)
- * 1강: Ch. 5 [ElevationData.txt](http://www.railsback-grimm-abm-book.com/Chapter05/ElevationData.txt)
+ - 1강: Ch. 5 [ElevationData.txt](http://www.railsback-grimm-abm-book.com/Chapter05/ElevationData.txt)
 
 * Hamill and Gilbert (2015), [Agent-based Modelling in Economics](http://cress.soc.surrey.ac.uk/web/publications/books/agent-based-modelling-economics/more-information)
  * 2강: Ch. 2 [Market model](http://cress.soc.surrey.ac.uk/web/sites/default/files/user-uploads/u1/Chapter%202-Market.nlogo)
