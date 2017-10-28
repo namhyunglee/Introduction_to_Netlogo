@@ -16,5 +16,5 @@
     * 1강: Ch. 5 [ElevationData.txt](http://www.railsback-grimm-abm-book.com/Chapter05/ElevationData.txt)
 
 2. Hamill and Gilbert (2015), [Agent-based Modelling in Economics](http://cress.soc.surrey.ac.uk/web/publications/books/agent-based-modelling-economics/more-information)
-         * 2강: Ch. 2 [Market model](http://cress.soc.surrey.ac.uk/web/sites/default/files/user-uploads/u1/Chapter%202-Market.nlogo)
-         * 3강: Ch. 4 [Phone adoption model](http://cress.soc.surrey.ac.uk/web/sites/default/files/user-uploads/u1/Chapter%204-Phone%20adoption.nlogo)
+    * 2강: Ch. 2 [Market model](http://cress.soc.surrey.ac.uk/web/sites/default/files/user-uploads/u1/Chapter%202-Market.nlogo)
+    * 3강: Ch. 4 [Phone adoption model](http://cress.soc.surrey.ac.uk/web/sites/default/files/user-uploads/u1/Chapter%204-Phone%20adoption.nlogo)
