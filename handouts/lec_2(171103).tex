@@ -1,0 +1,636 @@
+%\documentclass[handout, hyperref={unicode}]{beamer}
+\documentclass[hyperref={unicode}]{beamer}
+\usetheme{Warsaw}
+
+\usepackage{pdfpages}
+\usepackage{kotex}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[normalem]{ulem} % either use this (simple) or
+\usepackage{soul} % use this (many fancier options)
+\usepackage{cprotect}
+
+\graphicspath{{./images/}}
+
+\title{Netlogo 워크숍}
+\author{이남형\inst{1}}
+\institute{\inst{1} 연세대학교 경영연구소}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}[plain]
+\titlepage	
+\end{frame}
+
+\begin{frame}
+\tableofcontents	
+\end{frame}
+
+\begin{frame}{이번 강의의 목표}
+\begin{itemize}
+\item 목록(행렬) 만들기
+\item 모형 test 하기와 wishlist 만들어 보기
+\end{itemize}	
+\end{frame}
+
+
+\section{쇼핑 모형: ODD 프로토콜}
+\begin{frame}{쇼핑 모형과 ODD 프로토콜}
+\begin{itemize}
+\item 목적
+	\begin{itemize}
+	\item 과일과 야채 거래 시장을 Netlogo로 구현
+	\end{itemize}
+\item 독립체
+	\begin{itemize}
+	\item 소비자와 판매자
+	\end{itemize}
+\item 확률 과정
+	\begin{itemize}
+	\item 쇼핑 리스트의 아이템 
+	\item 판매자가 보유하는 아이템, 아이템의 소매 가격
+	\end{itemize}
+\item 초기화
+	\begin{itemize}
+	\item 소비자의 수, 구매를 위한 이동 속도, 구매 대안의 수
+	\item 판매자의 보유 아이템 수
+	\end{itemize}
+\item 결과
+	\begin{itemize}
+	\item 시간 변화에 따라, 구매하지 못한 아이템의 평균 개수
+	\item 평균 구매 속도
+	\end{itemize} 
+\end{itemize}	
+\end{frame}
+
+
+\begin{frame}{ODD와 Pseudo Codes}
+\begin{itemize}
+\item Pseudo Codes $\in$ ODD
+	\begin{itemize}
+	\item ODD는 ABM을 이용한 연구의 전체 설계도
+	\item Pseudo Codes는 ABM을 위한 프로그래밍 가이드
+		\begin{itemize}
+		\item ABM을 위한 프로그래밍은 반드시 Netlogo일 필요는 없음
+		\item C++, JAVA, Python, Swarm, $\cdots$
+		\end{itemize}
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\begin{frame}{Pseudo Codes}
+\begin{itemize}
+\item 판매를 위한 12개의 과일과 채소 리스트 설정
+\item 12개의 과일과 채소의 도매 가격 설정 $\rightarrow$ 1--100 중 랜덤
+\item 판매자
+	\begin{itemize}
+	\item 9개, 위치는 활동 공간의 중앙, 붉은색 집 
+	\item 각각의 가게는 12개의 과일과 채소 중 랜덤하게 보유 
+		\begin{itemize}
+		\item 몇 개를 보유할 지 슬라이더를 이용하여 통제
+		\item 소매가격은 도매 가격에 1--30\% 를 랜덤하게 마크업
+		\end{itemize}
+	\end{itemize}
+\item 소비자
+	\begin{itemize}
+	\item 몇 명의 소비자를 둘지는 슬라이더로 선택할 수 있음
+	\item 위치는 랜덤하게 결정, 노란색 사람
+	\end{itemize}	
+\end{itemize}	
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item 소비자 속성
+	\begin{itemize}
+	\item 1--8 종의 랜덤 아이템이 포함된 쇼핑 리스트
+	\item 방문하지 않은 판매자 리스트: 초기값 9
+	\item 사용 금액: 초기값 0
+	\item 소비자의 쇼핑 리스트 평균 길이를 계산
+	\end{itemize}
+\item 쇼핑
+	\begin{itemize}
+	\item 가장 싸게 파는 판매자를 스캔
+	\item 소비자는 선택한 판매자를 방문
+		\begin{itemize}
+		\item 재방문은 없음
+		\item 구매 기록 저장
+		\item 지불 가격 합산
+		\end{itemize}
+	\item 쇼핑 리스트가 비면 소비자는 집으로 돌아감	
+	\end{itemize}
+\item 결과를 보고하고 그래프를 그림	
+\end{itemize}	
+\end{frame}
+
+\section{쇼핑 모형: Netlogo}
+\subsection{기본 모형}
+\begin{frame}[fragile]{Setup: 전역 변수 설정}
+\begin{verbatim}
+	globals 
+	 [
+	  fruit-and-veg
+	  mean-items
+	 ]
+	
+	
+	breed [ shoppers shopper ]	 
+	breed [ traders trader ]
+	 
+	shoppers-own [ shopping-list ] 
+	traders-own [ stock ]
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Setup: 상품 목록 설정}
+\begin{verbatim}
+	to setup
+	 clear-all
+	 
+	 set fruit-and-veg
+	  [
+	  "apples" "bananas" "oranges" "plums" "mangos" 
+	  "grapes" "cabbage" "carrots" "potatos" "lettuce" 
+	  "tomatoes" "beans" 
+	  ]
+	  
+	 let xs [ -12 -9 -6 -3 0 3 6 9 12 ]
+	 
+	 reset-ticks	  
+	end	  
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]{Setup: 판매자 생성}
+\begin{verbatim}
+	to setup
+	...
+	 let xs [ -12 -9 -6 -3 0 3 6 9 12 ]
+	 foreach xs [ ?1 ->
+	  create-traders 1
+	  [
+	   set shape "house"
+	   setxy ?1 0
+	   set color red
+	   set stock n-of n-items-stocked fruit-and-veg
+	  ]
+	 ]
+	...  
+	end	  
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]{Setup: 소비자 생성}
+\begin{verbatim}
+	
+     create-shoppers n-shoppers
+     [
+      set shape "person"
+      setxy random-pxcor random-pycor
+      set color yellow
+      set shopping-list n-of (1 + random 8) fruit-and-veg 
+     ]
+     
+     set mean-items mean [ length shopping-list ] 
+     of shoppers
+	 
+	 reset-ticks  
+	end	  
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]{Setup: 시각적으로 확인하기}
+\begin{itemize}
+\item \verb|Interface| 탭
+	\begin{itemize}
+	\item \verb|Button| $\rightarrow$ \verb|Button| $\rightarrow$ setup
+	\item \verb|Button| $\rightarrow$ \verb|Slider| 
+		\begin{itemize}
+		\item $\rightarrow$ n-items-stocked, 0 -- 1 -- 5
+		\item $\rightarrow$ n-shoppers, 0 -- 1 -- 20
+		\end{itemize}
+	\end{itemize}
+\item 셋업 확인
+	\begin{itemize}
+	\item \verb|setup| 버튼 누르기
+	\item \verb|n-shoppers| 바꿔보기
+		\begin{itemize}
+		\item ok?
+		\end{itemize}
+	\item stock 체크하기 
+		\begin{itemize}
+		\item $\rightarrow$  \verb|monitor| $\rightarrow$  \verb|stock| 
+		\item 에러가 정상. 에러 내용을 확인해보자.
+		\item 어떻게 체크할 수 있을까?
+		\item \verb|show ( word "has " stock )|
+		\end{itemize}
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Go-procedure: 소비자가 판매자에게 가기}
+\begin{verbatim}
+to go
+ask shoppers with [ not empty? shopping-list ]
+  [
+    let stall one-of traders
+    
+    face stall
+    
+    while [ patch-here != [patch-here] of stall ]
+       [forward 0.005 * walking-speed]
+  ]
+  
+tick   
+end
+
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+
+[forward 0.005 * walking-speed]
+
+let purchases filter [ ?1 -> member? ?1 [stock] of stall ]
+  shopping-list
+
+foreach purchases
+ [ ?1 -> set shopping-list remove ?1 shopping-list ] 
+ if empty? shopping-list [ set ycor -16 ]
+ ]
+
+set mean-items mean [ length shopping-list ] of shoppers
+
+if mean-items = 0 [ stop ]
+
+
+tick
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{itemize}
+\item \verb|Interface| 탭
+	\begin{itemize}
+	\item \verb|Button| $\rightarrow$ \verb|Slider| 
+		\begin{itemize}
+		\item $\rightarrow$ walking-speed, 0 -- 0.1 -- 0.5
+		\end{itemize}
+	\item \verb|Button| $\rightarrow$ \verb|monitor| $\rightarrow$ 
+		\begin{itemize}
+		\item \verb|mean-items|
+		\item Mean number of items left to buy, 
+		\end{itemize}	
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+go
+\begin{frame}[fragile]{기본 모형 실행}
+\begin{itemize}
+\item \verb|Interface| 탭
+	\begin{itemize}
+	\item \verb|Button| $\rightarrow$ \verb|Button| $\rightarrow$ 
+		\begin{itemize}
+		\item go
+		\end{itemize}	
+	\end{itemize}
+\item 모형 구동 확인
+	\begin{itemize}
+	\item \verb|n-items-stocked|, \verb|n-shoppers|, \verb|walking-speed| 바꿔 가면서
+	\item 끝?
+	\end{itemize}
+\item 가격!
+\end{itemize}	
+\end{frame}
+
+\subsection{가격이 반영된 모형}
+\begin{frame}{가격과 행위자}
+\begin{itemize}
+\item 가격 변수
+	\begin{itemize}
+	\item 판매자: 각 아이템별 가격
+		\begin{itemize}
+		\item 도매 가격으로 구입한 후 마크업(랜덤)을 붙인 소매 가격 
+		\end{itemize}
+	\item 소비자: 소비액
+		\begin{itemize}
+		\item 소비액 기록
+		\item 예산은? $\rightarrow$ 추후 연구과제(wishlist)
+		\end{itemize}
+	\end{itemize}	
+\end{itemize}	
+\end{frame}
+
+
+\begin{frame}[fragile]{Setup: 가격 변수 설정}
+\begin{verbatim}
+globals
+ [
+	...
+  fruit-and-veg-prices
+ ] 	
+ 
+shoppers-own [ shopping-list spent ] 
+traders-own [ stock prices ] 
+
+to setup
+	...
+ set fruit-and-veg-prices n-values 
+  (length fruit-and-veg) [ 1 + random 100 ]
+  
+ let xs [ -12 -9 -6 -3 0 3 6 9 12 ]
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Setup: 상점별 마크업 가격 부여}
+\begin{verbatim}
+ 
+foreach xs [ ?1 ->
+  create-traders 1
+  [   
+;     show ( word "has " stock )
+    set prices [ ]
+    let mark-up ( 1 + random 30 ) / 100
+    foreach stock [ ??1 -> 
+     set prices lput 
+     ( ( 1 + mark-up) * 
+      ( item ( position ??1 fruit-and-veg ) 
+       fruit-and-veg-prices ) 
+     ) prices
+    ]
+  ]
+ ]    
+ 
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]{Go: 소비액 계산}
+\begin{verbatim}
+to go
+
+ask shoppers with [ ...
+ 
+ foreach purchases [ ?1 ->
+  [ 
+    set spent spent + item ( position ?1 [ stock ] of 
+           stall ) [ prices ] of stall 
+    set shopping-list remove ?1 shopping-list
+  ] 
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{결과값: 소비액 관찰}
+\begin{itemize}
+\item \verb|Interface| 탭
+	\begin{itemize}
+	\item \verb|Button| $\rightarrow$ \verb|plot| $\rightarrow$ 
+		\begin{itemize}
+		\item Spending
+		\item \verb|plot mean [ spent ] of shoppers |
+		\end{itemize}	
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+
+\begin{frame}[fragile]{가격이 반영된 모형 실행}
+\begin{itemize}
+\item Spending 창 관찰
+\item 모형의 약점은?
+	\begin{itemize}
+	\item mean number of items left to buy 관찰
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\subsection{모든 판매자를 방문하고 소비를 결정하는 모형}
+\begin{frame}[fragile]{판매자 방문과 선택}
+\begin{itemize}
+\item 소비자가 최초에는 랜덤하게 판매자 방문 $\rightarrow$ 이후 판매자를 선택
+\item 만약 판매자를 모두 방문했는데 원하는 상품이 없다면 쇼핑 중지
+\end{itemize}	
+\end{frame}
+
+\begin{frame}[fragile]{Setup: 방문한 판매자는?}
+\begin{verbatim}
+shoppers-own [ shopping-list spent not-yet-visited ]	
+...
+to setup
+...
+create-shoppers n-shoppers
+[
+  ...
+  set not-yet-visited traders
+  set shopping-list ...
+]
+
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]{Go: 방문한 판매자 기억시키기}
+\begin{verbatim}
+to go
+	
+ask shoppers with [ not empty? shopping-list ]
+ [
+;    let stall one-of traders
+   let stall one-of not-yet-visited
+   ...
+   set not-yet-visited not-yet-visited with 
+       [ self != stall]
+   let purchases filter [ ... 
+ ]
+
+\end{verbatim}	
+\end{frame}
+
+
+\begin{frame}[fragile]{Go: 구매 중지 및 구매 못한 상품 기록하기}
+\begin{verbatim}
+to go
+	
+ask shoppers with [ not empty? shopping-list ]
+ [
+   let stall one-of not-yet-visited
+   if stall = nobody
+    [
+     show ( word "No one sells " shopping-list )
+     set shopping-list []
+     stop
+    ]
+  ...  	
+\end{verbatim}	
+\end{frame}
+
+\begin{frame}[fragile]{판매자 방문과 중지 반영 모형 실행}
+\begin{itemize}
+\item \verb|Interface| 탭
+	\begin{itemize}
+	\item \verb|go| 버튼 $\rightarrow$ 마우스 오른쪽 버튼 클릭 \verb|Edit| $\rightarrow$ 
+		\begin{itemize}
+		\item 박스 \verb|forever| 체크
+		\end{itemize}	
+	\end{itemize}
+\item 끝?
+	\begin{itemize}
+	\item 책에서는 소비자가 일부 판매자만 방문하고, 자신이 구입하고자 하는 상품을 가장 싸게 파는 판매자로부터 구매하는 알고리듬을 구현
+	\item 자신의 wishlist를 늘려가 보자
+	\end{itemize}
+\end{itemize}		
+\end{frame}
+
+%\subsection{제한된 합리성을 반영한 모형}
+%\begin{frame}{제한된 합리성을 정의하기}
+%\begin{itemize}
+%\item 소비자는 일부의 판매자를 방문
+%\item 자신이 구입하고자 하는 상품을 가장 싸게 파는 판매자로부터 구매
+%\end{itemize}	
+%\end{frame}
+%
+%\begin{frame}[fragile]{일부 판매자 방문}
+%\begin{verbatim}
+%to go
+%ask shoppers ;with [ not empty? shopping-list ]
+%[
+%let route search-before-buying
+%
+%foreach route
+% [ ?1 ->
+%  let stall ?1  
+%
+%;    let stall one-of not-yet-visited
+%;    if stall = nobody
+%;     [
+%;        show ( word "No one sells " shopping-list )
+%;        set shopping-list []
+%
+%\end{verbatim}	
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\begin{verbatim}
+%;        stop
+%;     ]
+%face stall
+%while [ patch-here != ...
+%set not-yet-visited ...
+%
+%let purchases buy-from-stall shopping-list stall 
+%;filter [ ?1 -> member? ?1 [stock] of stall ] shopping-list
+%
+%foreach purchases 
+% [ ...
+% 
+%if empty? ...
+%]   
+%]
+%\end{verbatim}	
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\begin{verbatim}
+%to-report search-before-buying
+%let cheapest-price 100000
+%let cheapest-route []
+%
+%repeat n-scans [
+%let this-route []
+%let cost 0
+%let to-buy shopping-list
+%let visited []
+%while [ not empty? to-buy] [
+%  let stall one-of traders with [ not member? self visited ]
+%  if stall = nobody [ show (word "Trying to buy " to-buy ", 
+%       but no trader sells it.")
+%    set shopping-list []
+%    report []
+%  ]
+%\end{verbatim}	
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\begin{verbatim}
+%  set visited lput stall visited
+%  let purchases buy-from-stall to-buy stall
+%  if not empty? purchases [
+%    set this-route lput stall this-route
+%    foreach purchases [ ?1 ->
+%      set cost cost + produce-price ?1 stall
+%      set to-buy remove ?1 to-buy ]
+%  ]
+%]
+%if cost < cheapest-price [
+%  set cheapest-price cost
+%  set cheapest-route this-route
+%]
+%]
+%report cheapest-route
+%end	
+%\end{verbatim}	
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\begin{verbatim}
+%to-report produce-price [ produce stall ]
+%report item (position produce [stock] of stall) 
+%[ prices ] of stall
+%end
+%
+%to-report buy-from-stall [ what-to-buy stall ]
+%report filter [ ?1 -> member? ?1 [stock] of stall ] 
+%what-to-buy
+%end	
+%\end{verbatim}	
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\begin{verbatim}
+%to run-experiment
+%set n-scans 1
+%let runs-per-trial 100
+%while [ n-scans <= 10 ] [
+%let total-of-averages 0
+%repeat runs-per-trial [
+%  ask shoppers [
+%    set not-yet-visited traders
+%    set shopping-list n-of (1 + random 8) 
+%      fruit-and-veg
+%    set spent 0
+%  ]
+%  go
+%  set total-of-averages total-of-averages 
+%   + mean [ spent ] of shoppers
+%]
+%\end{verbatim}	
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\begin{verbatim}
+%show (word "Mean of average of cost of shopping lists over " 
+% runs-per-trial " runs for " n-scans 
+% " scans = " (total-of-averages / runs-per-trial))
+%set n-scans n-scans + 1
+%]
+%show "Finished."
+%end
+%\end{verbatim}	
+%\end{frame}
+
+%\begin{frame}
+%\bibliographystyle{apalike}	
+%\end{frame}
+
+\bibliography{my_library}
+
+\end{document}
