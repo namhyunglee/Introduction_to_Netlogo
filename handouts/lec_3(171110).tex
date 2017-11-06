@@ -1,0 +1,332 @@
+%\documentclass[handout, hyperref={unicode}]{beamer}
+\documentclass[hyperref={unicode}]{beamer}
+\usetheme{Warsaw}
+
+\usepackage{pdfpages}
+\usepackage{kotex}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[normalem]{ulem} % either use this (simple) or
+\usepackage{soul} % use this (many fancier options)
+\usepackage{cprotect}
+
+\graphicspath{{./images/}}
+
+\title{Netlogo 워크숍}
+\author{이남형\inst{1}}
+\institute{\inst{1} 연세대학교 경영연구소}
+\date{2017.11.10.}
+
+\begin{document}
+
+\begin{frame}[plain]
+\titlepage	
+\end{frame}
+
+\begin{frame}
+\tableofcontents	
+\end{frame}
+
+
+\section{소비의 네트워크 효과와 문턱점}
+\subsection{소비의 네트워크 효과}
+\begin{frame}{소비의 네트워크 효과}
+\begin{itemize}
+\item 소비의 네트워크 효과/양의 외부성  \cite{Arthur:1990fk}
+	\begin{itemize}
+	\item 어떤 소비자의 구매 결정이 다른 소비자의 구매에 영향을 받음
+		\begin{itemize}
+		\item 손님이 없는 식당에는 잘 안들어 감 \cite{Granovetter:1986aa}
+		\item (휴대)전화, SNS 등
+		\end{itemize}
+	\end{itemize}
+\item 전염병 확산 모형과 유사
+	\begin{itemize}
+	\item Susceptible -- Infect -- Removed (치료 후 면역)
+		\begin{itemize}
+		\item $\rightarrow$ 다른 사람이 구매하면 나도 구매
+		\end{itemize}
+	\item Susceptible -- Infect -- Susceptible (치료 후 다시 감염 가능)
+		\begin{itemize}
+		\item $\rightarrow$ 한번 구매하면 다시 구매
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\end{frame}	
+
+\subsection{소비의 문턱점}
+\begin{frame}{문턱점과 네트워크 효과}
+\begin{itemize}
+\item 문턱점(threshold) $+$ 네트워크
+	\begin{itemize}
+	\item 사람마다 문턱점이 주는 효과는 다를 것
+		\begin{itemize}
+		\item 문턱점 A에 도달해도 구매 안하거나
+		\item 문턱점 A보다 낮은 문턱점 B를 갖고 있어서 구매
+		\end{itemize}
+	\item 또는 문턱점이 같더라도 주변의 네트워크에 따라 채택 시점이 다를 수 있음
+	\end{itemize}
+\item 문턱점이 낮거나 사용자 네트워크에 노출이 자주 되는 사람 $\rightarrow$ 더 일찍 채택	
+\end{itemize}
+\end{frame}
+
+%\begin{frame}{문턱점의 이질성}
+%\begin{itemize}
+%\item \cite{Rogers:2003aa}
+%	\begin{itemize}
+%	\item Innovator
+%		\begin{itemize}
+%		\item 집단의 2.5\%. 
+%		\item 소셜 네트워크, 재무 자산, 기술 지식 등이 큼, 하지만 사회와는 약한 연결 고리.
+%		\end{itemize}
+%	\item Early adopter
+%		\begin{itemize}
+%		\item 13.5\%. 
+%		\item 다른 조건은 Innovator와 유사, 다만 사회와 더 밀접하게 관련
+%		\end{itemize}
+%	\item Early majority
+%		\begin{itemize}
+%		\item 34\%.
+%		\item 동료와 자주 상호 작용, Early adopter와는 잘 안 만남
+%		\end{itemize}
+%	\item Late majority
+%		\begin{itemize}
+%		\item 34\%
+%		\item 제한된 자원 보유, 동료의 압력에 의해 채택
+%		\end{itemize}
+%	\item Laggards
+%		\begin{itemize}
+%		\item 16\%, 다른 laggard와 주로 관계
+%		\end{itemize}
+%	\end{itemize}
+%\end{itemize}	
+%\end{frame}
+%
+%\begin{frame}
+%\begin{columns}
+%\begin{column}{.5\textwidth}
+%\begin{itemize}
+%\item 채택률은 보통 로지스틱 함수, 통상 S자 곡선
+%\item $\rightarrow$ ABM으로 해보자
+%	\begin{itemize}
+%	\item infection model
+%		\begin{itemize}
+%		\item 어떤 행위자 자신의 네트워크 중 한 행위자가 사용하면 자신도 사용
+%		\end{itemize}
+%	\item influence model
+%		\begin{itemize}
+%		\item 어떤 행위자 자신의 네트워크 중 사용자 비율을 문턱점으로 갖고 있음, 이를 넘어서면 사용
+%		\end{itemize}
+%	\item 어떤 경우에든 seed가 필요
+%		\begin{itemize}
+%		\item $\rightarrow$ innovator 2.5\%
+%		\end{itemize}
+%	\end{itemize}
+%\end{itemize}
+%\end{column}
+%
+%\begin{column}{.5\textwidth}
+%	\begin{overlayarea}{0.38\textwidth}{4cm}
+%	\includegraphics[scale = 0.4]{scurve.png}
+%	\end{overlayarea}
+%\end{column}	
+%\end{columns}
+%
+%\end{frame}
+%
+%\subsection{Influence Models}
+%\begin{itemize}
+%\item Figure 4.3
+%\item average social circles $=$ 3
+%	\begin{itemize}
+%	\item innovator의 분포가 하나 또는 두 개의 그룹으로 cluster 되어 있으면 채택이 take off
+%	\item social shiting도 영향, 하지만 채택률이 100\%에 도달하지 않음
+%	\end{itemize}
+%\item average social circles $=$ 7
+%	\begin{itemize}
+%	\item innovator의 분포는 100\% 채택률에 도달하는 속도에만 영향
+%		\begin{itemize}
+%		\item scattered $\rightarrow$ 10기만에
+%		\item clustered $\rightarrow$ 20기
+%		\end{itemize}
+%	\item shifting의 영향이 없음 $\rightarrow$ 이미 잘 연결되어 있기 때문
+%	\end{itemize}
+%\end{itemize}
+%
+%\section{Adoption of Innovative Products}
+%\begin{itemize}
+%\item 각자의 threshold는 다름
+%	\begin{itemize}
+%	\item innovator 2.5\%가 가장 낮은 threshold
+%	\item 어떤 행위자는 personal network에 채택한 사람이 전혀 없을 수도 $\rightarrow$ 전체 채택률(사회의 채택률)이 threshold를 넘어서면 채택
+%	\item 채택률은 threshold가 어떻게 분포하는가에 영향을 받을 것
+%		\begin{itemize}
+%		\item uniform distribtion
+%		\item normal distribution: mean 50, s.d. 50
+%		\end{itemize}
+%	\end{itemize}
+%\item Figure 4.4
+%	\begin{itemize}
+%	\item uniform distribution: 25기 후 채택률 12\%
+%	\item normal distribution: 25기 후 채택률 3\% $\rightarrow$ 상대적으로 threshold가 낮은 행위자가 적음
+%	\end{itemize}
+%\item Table 4.1
+%	\begin{itemize}
+%	\item 10기 후 결과: Take-off 양상 다르게 나타남
+%	\item 사람들이 어떻게 영향을 받는지에 대한 아이디어가 중요
+%	\end{itemize}
+%\end{itemize}
+
+
+\section{영국 가구의 유선 전화 보급률}
+\begin{frame}[fragile]{영국 가구의 유선 전화 보급률}
+\begin{itemize}
+\item 1951년--2001년의 영국 유선 전화 보급률을 모사
+	\includegraphics[scale = 0.6]{UK_phone_adoption}
+	\begin{itemize}
+	\item 현실의 중요한 두 가지 변화를 반영: 인구 구조와 소득
+	\item \url{http://cress.soc.surrey.ac.uk/web/sites/default/files/user-uploads/u1/Chapter%204-Phone%20adoption.nlogo}
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\subsection*{사회 변화}
+\subsubsection*{인구 구조 변화}
+\begin{frame}{가구 특성}
+\begin{itemize}
+\item 가구 수 증가
+	\begin{itemize}
+	\item 1951년 1,450만 $\rightarrow$ 2001년 2,400만
+	\end{itemize}
+\item 총 가구수는 1,000으로 유지
+\item 두 개의 주요 특징은 모형에 포함
+	\begin{itemize}
+	\item 1인 가구의 증가 11\% $\rightarrow$ 30\%
+		\begin{itemize}
+		\item 절반은 연금생활자
+		\end{itemize}
+	\item 40-59세 가구의 비중 감소 44\% $\rightarrow$ 37\%, 
+		\begin{itemize}
+		\item 40세 이하와 60세 이상은 증가
+		\end{itemize}
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\subsubsection*{소득 구조 변화}
+\begin{frame}{소득 구조 특성}
+\begin{itemize}
+\item 실질 소득은 증가
+	\begin{itemize}
+	\item 1인당 실질 GDP는 연 평균 2\% 증가 $\rightarrow$ 연간 차이 없이, 평균값을 모형에 반영
+	\item 전화기 가격 정보는 제한적
+	\end{itemize}
+\item 노동시장 변화 포함
+	\begin{itemize}
+	\item 남성의 경제활동 참가율 감소,
+	\item 여성의 경제활동 참가율 상승, 
+	\item 실업률 상승
+	\end{itemize}
+\item 지니계수를 이용한 소득 분포 반영
+\end{itemize}	
+\end{frame}
+
+\subsection{소득만 영향을 미치는 모형}
+\begin{frame}{소득 문턱점}
+\begin{itemize}
+\item 소득이 문턱점을 넘으면 전화기를 구입
+	\begin{itemize}
+	\item 1951년 전화기를 가진 가구는 10\%, 소득 문턱점은 1.85
+		\begin{itemize}
+		\item 1951년의 평균 소득을 1로 normalize 할 때, 평균 소득의 약 2배가 되면 구입하는 셈
+		\item 만약 이 소득 문턱점을 계속 사용하면 1970년대 이후의 구입에 대해서는 과소 추정
+		\end{itemize}
+	\item 1970년대 이후 소득 문턱점을 1로 바꾸는 것이 타당
+		\begin{itemize}
+		\item 하지만, 이 경우 1950년대의 전화기 구입을 과대 추정
+		\end{itemize}
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\begin{frame}{소득 문턱점 모형의 결과}
+\includegraphics[scale = 0.6]{UK_phone_adoption_income_only_simulation.png}
+\end{frame}
+
+\subsection{네트워크 효과가 있는 모형}
+\begin{frame}{사회 계층, 새로운 전화기 구입 규칙 도입}
+\begin{itemize}
+\item 4개 계층
+	\begin{itemize}
+	\item ABs -- C1s -- C2s -- DEs
+	\item 고소득, 고학력, 고숙련 순
+	\item 25\%씩 분포
+	\end{itemize}
+\item 계층 변동은 매년 5\%
+\item 전화기 구입
+	\begin{itemize}
+	\item social circle 의 누군가 전화기를 갖고 있으면 그리고
+	\item 충분한 소득이 있으면
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\begin{frame}{문턱점과 네트워크 크기 변화}
+\begin{itemize}
+\item 문턱점과 개인의 네트워크 크기를 다양화 해서 실험
+	\begin{itemize}
+	\item 소득 문턱점 1951년의 35\% $\rightarrow$ 매년 2\% 소득 증가로 1968년 이후에는 소득 제약이 사라짐
+	\item 1인 가구의 social reach가 8일때 결과가 제일 좋음
+		\begin{itemize}
+		\item 0--8, 평균 2 (sd$=$0.06)
+		\end{itemize}
+	\item multi-person 가구는 12일 때
+		\begin{itemize}
+		\item 0--12, 평균 4.5 (sd$=$0.10)
+		\end{itemize}
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+\begin{frame}{네트워크 효과 모형의 결과}
+\includegraphics[scale = 0.6]{UK_phone_adoption_class_network_simulation}	
+\begin{itemize}
+\item 가장 좋은 모형은 1978년까지의 채택률을 다소 과대평가
+	\begin{itemize}
+	\item 각 년의 결과는 일치하지 않음 
+	\item 마지막 2년의 하락도 재현하지 못함
+		\begin{itemize}
+		\item 휴대전화의 보급을 모형화하지 않았기 때문
+		\end{itemize}
+	\item 하지만 소득과 계급별 채택률은 모사
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\section{결론}
+\begin{frame}
+\begin{itemize}
+\item ABM이 양의 피드백을 모형하는 유일한 방법은 아님
+	\begin{itemize}
+	\item 하지만 이질성을 허용함으로써 강력한 힘을 가짐
+	\end{itemize}
+\item 다른 네트워크 모형은 NetLogo Library 확인
+%\item ABM이 정책과 기업에서 사용되려면, creation of basic building block이 중요 $\rightarrow$ 이 주제는 마지막 장에서 다시
+\end{itemize}	
+\end{frame}
+
+
+\begin{frame}
+\bibliography{my_library}
+\end{frame}
+
+\bibliographystyle{apalike}	
+
+\end{document}
