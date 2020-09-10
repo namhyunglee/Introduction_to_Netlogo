@@ -11,7 +11,7 @@
 * /nlogo: 강의용 Netlogo 파일(강의 종료 후 업데이트 예정)
 * /ODD_protocols: ODD 프로토콜 파일(.numbers, .pdf, .xlsx)
 
-## 온라인 리소스
+## 온라인 자료
 1. Railsback and Grimm (2012), Agent-based and Individual-based Modeling: A Practical Introduction, [Downloads and Errata](http://www.railsback-grimm-abm-book.com/downloads.html)
     * 1강: Ch. 5 [ElevationData.txt](http://www.railsback-grimm-abm-book.com/Chapter05/ElevationData.txt)
 
